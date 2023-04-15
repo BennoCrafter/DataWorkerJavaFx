@@ -20,6 +20,10 @@ public class EntryBase {
 		return this.entries.size();
 	}
 
+	public List<String> getAttributes() { return this.attributes; }
+
+	public List<Entry> getEntries() { return this.entries; }
+
 	public String attributeAtPosition(int position) {
 		if (position < this.attributes.size()) {
 			return this.attributes.get(position);

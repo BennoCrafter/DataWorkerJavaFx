@@ -5,10 +5,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.ContextMenuEvent;
 
 import de.bennocrafter.dataworker.core.Entry;
+import de.bennocrafter.dataworker.core.EntryBase;
+import de.bennocrafter.dataworker.io.CSVDataWorkerReader;
 
 public class DataWorkerController {
 
@@ -23,19 +24,22 @@ public class DataWorkerController {
 	}
 
 	@FXML
-	void onHelloButtonClick(ActionEvent event) {
-		TableColumn<Entry, String> nameColumn = new TableColumn<>("Name");
-		nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+	void onHelloButtonClick(ActionEvent event) throws Exception {
+		String fileName = "Weinbuecher.csv";
+		CSVDataWorkerReader r = new CSVDataWorkerReader();
+		EntryBase base = r.read(fileName, "Weinbuecher");
 
-		TableColumn<Entry, Integer> ageColumn = new TableColumn<>("Age");
-		ageColumn.setCellValueFactory(new PropertyValueFactory<>("age"));
+		// define header of the table
+		for (String attribute: base.getAttributes()) {
+			TableColumn<Entry, String> column = new TableColumn<>(attribute);
+			column.setCellValueFactory(new EntryPropertyValueFactory(attribute));
+			entryBaseTable.getColumns().add(column);
+		}
 
-		entryBaseTable.getColumns().add(nameColumn);
-		entryBaseTable.getColumns().add(ageColumn);
-		Entry textEntry = new Entry();
-		textEntry.addValueFor("name", "joba").addValueFor("age", "50");
-		entryBaseTable.getItems().add(textEntry);
-
+		// define content of the table
+		for (Entry e: base.getEntries()) {
+			entryBaseTable.getItems().add(e);
+		}
 	}
 
 	@FXML
