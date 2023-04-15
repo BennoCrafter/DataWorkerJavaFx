@@ -54,8 +54,8 @@ public class DataWorkerController implements Initializable {
 				for (String file: this.recentFiles) {
 					String buttonLabel = loadEntryBase(file).getTableName();
 					if (buttonLabel==null) buttonLabel = "Noname";
-
 					Label button = new Label(buttonLabel);
+					button.setWrapText(true);
 
 					button.setOnMouseClicked(event -> {
 						try {
