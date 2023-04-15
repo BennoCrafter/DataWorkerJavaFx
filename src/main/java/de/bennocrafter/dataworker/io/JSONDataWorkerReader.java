@@ -17,6 +17,7 @@ import de.bennocrafter.dataworker.core.EntryBase;
 public class JSONDataWorkerReader {
     public EntryBase read(String inputName) {
         EntryBase base = new EntryBase();
+        base.setLocation(inputName);
         try (FileReader fileReader = new FileReader(inputName)) {
             JSONTokener jsonTokener = new JSONTokener(fileReader);
             JSONObject loadedJsonObject = new JSONObject(jsonTokener);

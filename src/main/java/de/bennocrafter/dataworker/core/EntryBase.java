@@ -5,6 +5,7 @@ import java.util.List;
 
 public class EntryBase {
 	String tableName;
+	String location;
 	List<Entry> entries = new ArrayList<>();
 	List<String> attributes = new ArrayList<>();
 
@@ -16,6 +17,14 @@ public class EntryBase {
 		this.attributes = attributes;
 	}
 	public String getTableName() { return this.tableName; }
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
 
 	public int size() {
 		return this.entries.size();
@@ -61,5 +70,13 @@ public class EntryBase {
 
 	public void setName(String tableName) {
 		this.tableName = tableName;
+	}
+
+	public boolean remove(Entry entry) {
+		if (entries.contains(entry)) {
+			entries.remove(entry);
+			return true;
+		}
+		return false;
 	}
 }
