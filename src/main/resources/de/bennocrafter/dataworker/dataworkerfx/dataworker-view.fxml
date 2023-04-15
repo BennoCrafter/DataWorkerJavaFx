@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.bennocrafter.dataworker.dataworkerfx.DataWorkerController">
    <top>
@@ -37,8 +40,22 @@
    <center>
       <BorderPane prefHeight="382.0" prefWidth="513.0" BorderPane.alignment="CENTER">
          <center>
-            <TableView fx:id="entryBaseTable" editable="true" prefHeight="379.0" prefWidth="480.0" tableMenuButtonVisible="true" BorderPane.alignment="CENTER" />
+            <TableView fx:id="entryBaseTable" editable="true" prefHeight="329.0" prefWidth="480.0" tableMenuButtonVisible="true" BorderPane.alignment="CENTER" />
          </center>
+         <top>
+            <HBox prefHeight="24.0" prefWidth="480.0" BorderPane.alignment="TOP_CENTER">
+               <children>
+                  <Label fx:id="entryBaseNameLabel" text="Noname">
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+         </top>
       </BorderPane>
    </center>
    <left>

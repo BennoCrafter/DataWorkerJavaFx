@@ -1,18 +1,18 @@
 package de.bennocrafter.dataworker.io;
 
-import de.bennocrafter.dataworker.core.Entry;
-import de.bennocrafter.dataworker.core.EntryBase;
-import org.json.JSONObject;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.json.JSONTokener;
+
+import de.bennocrafter.dataworker.core.Entry;
+import de.bennocrafter.dataworker.core.EntryBase;
 
 public class JSONDataWorkerReader {
     public EntryBase read(String inputName) {
@@ -47,6 +47,6 @@ public class JSONDataWorkerReader {
         } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
-        return null;
+        return base;
     }
 }

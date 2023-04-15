@@ -15,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -22,17 +23,22 @@ import javafx.scene.layout.VBox;
 
 import de.bennocrafter.dataworker.core.Entry;
 import de.bennocrafter.dataworker.core.EntryBase;
-import de.bennocrafter.dataworker.io.CSVDataWorkerReader;
+import de.bennocrafter.dataworker.io.JSONDataWorkerReader;
 
 public class DataWorkerController implements Initializable {
+	private static final String DATAWORKER_PROPERTIES = "dataworker.properties";
 	private List<String> recentFiles = new ArrayList<>();
 
-	private static final String DATAWORKER_PROPERTIES = "dataworker.properties";
+	private EntryBase selectedEntryBase;
+
 	@FXML
 	private TableView<Entry> entryBaseTable;
 
 	@FXML
 	private VBox recentBasesPane;
+
+	@FXML
+	private Label entryBaseNameLabel;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -73,8 +79,8 @@ public class DataWorkerController implements Initializable {
 	private void loadAndRefresh(String fileName) throws Exception {
 		entryBaseTable.getColumns().clear();
 		entryBaseTable.getItems().clear();
-		CSVDataWorkerReader r = new CSVDataWorkerReader();
-		EntryBase base = r.read(fileName, fileName);
+		JSONDataWorkerReader r = new JSONDataWorkerReader();
+		EntryBase base = r.read(fileName);
 
 		// define header of the table
 		for (String attribute: base.getAttributes()) {
@@ -90,6 +96,8 @@ public class DataWorkerController implements Initializable {
 			entryBaseTable.getItems().add(e);
 		}
 		entryBaseTable.setEditable(true);
-
+		this.selectedEntryBase = base;
+		if (base.getTableName() != null) this.entryBaseNameLabel.setText(base.getTableName());
+		else this.entryBaseNameLabel.setText("Noname");
 	}
 }
