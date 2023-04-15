@@ -15,6 +15,7 @@ public class EntryBase {
 	public void setAttributes(List<String> attributes) {
 		this.attributes = attributes;
 	}
+	public String getTableName() { return this.tableName; }
 
 	public int size() {
 		return this.entries.size();
