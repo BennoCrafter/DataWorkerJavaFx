@@ -45,7 +45,7 @@
          <top>
             <HBox prefHeight="24.0" prefWidth="480.0" BorderPane.alignment="TOP_CENTER">
                <children>
-                  <Label fx:id="entryBaseNameLabel" text="Noname">
+                  <Label fx:id="entryBaseNameLabel" prefHeight="28.0" prefWidth="318.0" text="Noname">
                      <padding>
                         <Insets top="5.0" />
                      </padding>

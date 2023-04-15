@@ -52,7 +52,9 @@ public class DataWorkerController implements Initializable {
 			if (recentfiles != null) {
 				this.recentFiles = Arrays.asList(recentfiles.split(","));
 				for (String file: this.recentFiles) {
-					Button button = new Button(file);
+					String buttonLabel = loadEntryBase(file).getTableName();
+					if (buttonLabel==null) buttonLabel = "Noname";
+					Button button = new Button(buttonLabel);
 					button.setOnAction(event -> {
 						try {
 							loadAndRefresh(file);
@@ -76,11 +78,15 @@ public class DataWorkerController implements Initializable {
 		Platform.exit();
 	}
 
+	private EntryBase loadEntryBase(String filename) {
+		JSONDataWorkerReader r = new JSONDataWorkerReader();
+		return r.read(filename);
+	}
+
 	private void loadAndRefresh(String fileName) throws Exception {
 		entryBaseTable.getColumns().clear();
 		entryBaseTable.getItems().clear();
-		JSONDataWorkerReader r = new JSONDataWorkerReader();
-		EntryBase base = r.read(fileName);
+		EntryBase base = loadEntryBase(fileName);
 
 		// define header of the table
 		for (String attribute: base.getAttributes()) {
