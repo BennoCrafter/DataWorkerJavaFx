@@ -118,4 +118,10 @@ public class DataWorkerController implements Initializable {
 		if (base.getTableName() != null) this.entryBaseNameLabel.setText(base.getTableName());
 		else this.entryBaseNameLabel.setText("Noname");
 	}
+
+	@FXML
+	void aboutMenuClicked(ActionEvent event) {
+		new AboutMenu().show();
+	}
+
 }
