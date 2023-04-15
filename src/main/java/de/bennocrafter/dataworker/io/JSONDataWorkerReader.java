@@ -43,9 +43,6 @@ public class JSONDataWorkerReader {
                 }
                 base.add(e);
             }
-            System.out.println("Loaded entries: " + base.getEntries());
-            System.out.println("Loaded attrs: " + base.getAttributes());
-            System.out.println("Loaded name: " + base.getTableName());
 
         } catch (IOException | JSONException e) {
             e.printStackTrace();
