@@ -2,10 +2,10 @@ package de.bennocrafter.dataworker.dataworkerfx;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.control.cell.TextFieldTableCell;
 
 import de.bennocrafter.dataworker.core.Entry;
 import de.bennocrafter.dataworker.core.EntryBase;
@@ -17,14 +17,11 @@ public class DataWorkerController {
 	private TableView<Entry> entryBaseTable;
 
 	@FXML
-	private Label welcomeText;
+	private Button loadButton;
+
 
 	@FXML
-	void onContextEntryBaseTable(ContextMenuEvent event) {
-	}
-
-	@FXML
-	void onHelloButtonClick(ActionEvent event) throws Exception {
+	void onLoadButtonClick(ActionEvent event) throws Exception {
 		String fileName = "Weinbuecher.csv";
 		CSVDataWorkerReader r = new CSVDataWorkerReader();
 		EntryBase base = r.read(fileName, "Weinbuecher");
@@ -33,6 +30,8 @@ public class DataWorkerController {
 		for (String attribute: base.getAttributes()) {
 			TableColumn<Entry, String> column = new TableColumn<>(attribute);
 			column.setCellValueFactory(new EntryPropertyValueFactory(attribute));
+			column.setCellFactory(TextFieldTableCell.forTableColumn());
+			column.setOnEditCommit(e->e.getTableView().getItems().get(e.getTablePosition().getRow()).addValueFor(attribute, e.getNewValue()));
 			entryBaseTable.getColumns().add(column);
 		}
 
@@ -40,11 +39,7 @@ public class DataWorkerController {
 		for (Entry e: base.getEntries()) {
 			entryBaseTable.getItems().add(e);
 		}
-	}
-
-	@FXML
-	void onSortTable(ActionEvent event) {
-
+		entryBaseTable.setEditable(true);
 	}
 
 }
