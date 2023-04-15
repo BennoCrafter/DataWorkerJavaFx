@@ -11,5 +11,9 @@ public class Converter {
         JSONWriter jsonWriter = new JSONWriter();
         jsonWriter.write(base, outputName);
 
+
+        String inputName = "Weinbuecher.json";
+        JSONDataWorkerReader jsonReader = new JSONDataWorkerReader();
+        EntryBase basey = jsonReader.read(inputName);
     }
 }
