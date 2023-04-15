@@ -86,24 +86,34 @@ public class DataWorkerController implements Initializable {
 	}
 
 	private void loadAndRefresh(String fileName) throws Exception {
+		entryBaseTable.setEditable(true);
 		entryBaseTable.getColumns().clear();
 		entryBaseTable.getItems().clear();
 		EntryBase base = loadEntryBase(fileName);
 
 		// define header of the table
-		for (String attribute: base.getAttributes()) {
+		for (String attribute : base.getAttributes()) {
 			TableColumn<Entry, String> column = new TableColumn<>(attribute);
 			column.setCellValueFactory(new EntryPropertyValueFactory(attribute));
 			column.setCellFactory(TextFieldTableCell.forTableColumn());
-			column.setOnEditCommit(e->e.getTableView().getItems().get(e.getTablePosition().getRow()).addValueFor(attribute, e.getNewValue()));
+			column.setOnEditCommit(e -> {
+				Entry entry = e.getTableView().getItems().get(e.getTablePosition().getRow());
+				String newValue = e.getNewValue();
+				if (newValue != null && !newValue.isEmpty()) {
+					entry.addValueFor(attribute, newValue);
+				} else {
+					// Optional: Handle empty or null values as needed
+				}
+			});
+			column.setEditable(true); // Enable cell editing
 			entryBaseTable.getColumns().add(column);
 		}
+
 
 		// define content of the table
 		for (Entry e: base.getEntries()) {
 			entryBaseTable.getItems().add(e);
 		}
-		entryBaseTable.setEditable(true);
 		this.selectedEntryBase = base;
 		if (base.getTableName() != null) this.entryBaseNameLabel.setText(base.getTableName());
 		else this.entryBaseNameLabel.setText("Noname");
