@@ -27,6 +27,7 @@ public class JSONDataWorkerReader {
 
             JSONArray loadedAttributesArray = loadedJsonObject.getJSONArray("attributes");
             List<String> loadedAttributes = new ArrayList<>();
+
             for (int i = 0; i < loadedAttributesArray.length(); i++) {
                 String attribute = loadedAttributesArray.getString(i);
                 loadedAttributes.add(attribute);

@@ -42,8 +42,9 @@ public class JSONDataWorkerWriter {
 
     private void writeToFile(String outputName, JSONObject jsonObject) {
         try (FileWriter fileWriter = new FileWriter(outputName)) {
-            fileWriter.write(jsonObject.toString(4)); // 4 is the indentation level
-            System.out.println("JSON data has been saved to file: data.json");
+            fileWriter.write(jsonObject.toString(3)); // 4 is the indentation level
+            String currentPath = new java.io.File(outputName).getCanonicalPath();
+            System.out.println("JSON data has been saved to file: " + currentPath);
         } catch (IOException e) {
             e.printStackTrace();
         }

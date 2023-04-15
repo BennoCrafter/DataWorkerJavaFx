@@ -50,6 +50,7 @@ public class CSVDataWorkerReader {
 		base.setAttributes(attr);
 	}
 
+	//example usage to read a csv into EntryBase
 	public static void main(String[] args) throws Exception {
 		String fileName = "Weinbuecher.csv";
 		CSVDataWorkerReader r = new CSVDataWorkerReader();
