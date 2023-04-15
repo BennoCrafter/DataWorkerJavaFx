@@ -122,6 +122,7 @@ public class DataWorkerController implements Initializable {
 	@FXML
 	void aboutMenuClicked(ActionEvent event) {
 		new AboutMenu().show();
+
 	}
 
 }
