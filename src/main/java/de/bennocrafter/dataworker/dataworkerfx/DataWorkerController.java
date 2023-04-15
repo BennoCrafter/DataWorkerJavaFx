@@ -14,7 +14,6 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -44,6 +43,7 @@ public class DataWorkerController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		updateRecentBasesPane();
 	}
+
 	private void updateRecentBasesPane() {
 		Properties properties = new Properties();
 		try (InputStream input = new FileInputStream(DATAWORKER_PROPERTIES)) {
@@ -54,8 +54,10 @@ public class DataWorkerController implements Initializable {
 				for (String file: this.recentFiles) {
 					String buttonLabel = loadEntryBase(file).getTableName();
 					if (buttonLabel==null) buttonLabel = "Noname";
-					Button button = new Button(buttonLabel);
-					button.setOnAction(event -> {
+
+					Label button = new Label(buttonLabel);
+
+					button.setOnMouseClicked(event -> {
 						try {
 							loadAndRefresh(file);
 						}
