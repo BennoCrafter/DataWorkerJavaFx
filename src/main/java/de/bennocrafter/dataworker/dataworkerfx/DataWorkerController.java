@@ -14,12 +14,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.VBox;
 
@@ -27,6 +22,7 @@ import de.bennocrafter.dataworker.core.Entry;
 import de.bennocrafter.dataworker.core.EntryBase;
 import de.bennocrafter.dataworker.io.JSONDataWorkerReader;
 import de.bennocrafter.dataworker.io.JSONDataWorkerWriter;
+import javafx.stage.Stage;
 
 public class DataWorkerController implements Initializable {
 	private static final String DATAWORKER_PROPERTIES = "dataworker.properties";
@@ -50,6 +46,10 @@ public class DataWorkerController implements Initializable {
 	@FXML
 	private Button deleteEntryButton;
 	private Entry selectedEntry;
+
+	@FXML
+	private TextField searchBar;
+
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -90,6 +90,22 @@ public class DataWorkerController implements Initializable {
 	@FXML
 	void onQuitAction(ActionEvent event) {
 		Platform.exit();
+	}
+	@FXML
+	void onUndoAction(ActionEvent event){
+		System.out.println("undo");
+	}
+	@FXML
+	void onloadBackupAction(ActionEvent event){
+		System.out.println("load backup");
+	}
+	@FXML
+	void onSaveAction(ActionEvent event){
+		saveCurrentEntryBase();
+	}
+
+	@FXML
+	void onReloadAction(ActionEvent event) {
 	}
 
 	private EntryBase loadEntryBase(String filename) {
@@ -155,10 +171,29 @@ public class DataWorkerController implements Initializable {
 
 	@FXML
 	void onAdEntryButton(ActionEvent event) {
-		// TODO
-		System.out.println("Not implemented yet.");
+		if (selectedEntryBase != null) {
+			Entry newEntry = new Entry();
+			for (String attribute : selectedEntryBase.getAttributes()) {
+				newEntry.addValueFor(attribute, ""); // Set default value as empty string
+			}
+			selectedEntryBase.add(newEntry);
+			tableView.getItems().add(newEntry);
+			saveCurrentEntryBase();
+
+		}
+
 	}
 
+
+
+	@FXML
+	void onSearchPromtEntered(ActionEvent event){
+
+		System.out.println(searchBar.getText());
+		System.out.println(selectedEntryBase.allMatches(searchBar.getText()));
+		searchBar.setOnMouseClicked(e -> searchBar.selectAll());
+
+	}
 	@FXML
 	void onDeleteEntryButton(ActionEvent event) {
 		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

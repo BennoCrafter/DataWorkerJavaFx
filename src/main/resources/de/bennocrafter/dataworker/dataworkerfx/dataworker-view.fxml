@@ -8,6 +8,7 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -19,14 +20,22 @@
          <children>
             <MenuBar prefWidth="600.0">
               <menus>
-                <Menu mnemonicParsing="false" text="File">
-                  <items>
-                    <MenuItem mnemonicParsing="false" onAction="#onQuitAction" text="Quit" />
-                  </items>
+                  <Menu mnemonicParsing="false" text="DataWorker">
+                    <items>
+                        <MenuItem fx:id="backupLoader" mnemonicParsing="false" onAction="#onloadBackupAction" text="Load Backup" />
+                        <MenuItem fx:id="onReloadAction" mnemonicParsing="false" onAction="#onReloadAction" text="Reload" />
+                        <MenuItem mnemonicParsing="false" onAction="#onQuitAction" text="Quit" />
+                    </items>
+                  </Menu>
+                <Menu mnemonicParsing="false" onAction="#onReloadAction" text="File">
+                     <items>
+                        <MenuItem fx:id="save" mnemonicParsing="false" onAction="#onSaveAction" text="Save" />
+                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Edit">
                   <items>
                     <MenuItem mnemonicParsing="false" text="Delete" />
+                        <MenuItem fx:id="undoButton" mnemonicParsing="false" onAction="#onUndoAction" text="Undo" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
@@ -55,6 +64,7 @@
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
+                  <TextField fx:id="searchBar" onAction="#onSearchPromtEntered" promptText="Search" />
                </children>
             </HBox>
          </top>
