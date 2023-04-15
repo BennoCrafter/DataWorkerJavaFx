@@ -8,7 +8,7 @@ public class Converter {
         CSVDataWorkerReader reader = new CSVDataWorkerReader();
         EntryBase base = reader.read("Weinbuecher.csv", "Weinbücher");
 
-        JSONWriter jsonWriter = new JSONWriter();
+        JSONDataWorkerWriter jsonWriter = new JSONDataWorkerWriter();
         jsonWriter.write(base, outputName);
 
 
