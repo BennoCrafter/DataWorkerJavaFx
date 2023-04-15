@@ -8,6 +8,13 @@ import java.util.Objects;
  * This class holds all data values for a CRUD entry.
  */
 public class Entry {
+	@Override
+	public String toString() {
+		return "Entry{" +
+				"values=" + values +
+				'}';
+	}
+
 	// {'Jahr': '2023'; 'Autor': 'joba',...}
 	private Map<String, String> values = new HashMap<>();
 
