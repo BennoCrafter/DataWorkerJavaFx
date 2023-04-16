@@ -30,6 +30,7 @@
                 <Menu mnemonicParsing="false" onAction="#onReloadAction" text="File">
                      <items>
                         <MenuItem fx:id="save" mnemonicParsing="false" onAction="#onSaveAction" text="Save" />
+                        <MenuItem fx:id="newDataBase" mnemonicParsing="false" onAction="#onNewDataBaseAction" text="Neue DatenBank" />
                      </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Edit">

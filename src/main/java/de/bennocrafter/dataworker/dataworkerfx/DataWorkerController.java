@@ -1,15 +1,10 @@
 package de.bennocrafter.dataworker.dataworkerfx;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
-import java.util.ResourceBundle;
+import java.util.*;
 
+import de.bennocrafter.dataworker.io.CreateNewDataBase;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -57,6 +52,8 @@ public class DataWorkerController implements Initializable {
 	}
 
 	private void updateRecentBasesPane() {
+		recentBasesPane.getChildren().clear();
+
 		Properties properties = new Properties();
 		try (InputStream input = new FileInputStream(DATAWORKER_PROPERTIES)) {
 			properties.load(input);
@@ -86,6 +83,32 @@ public class DataWorkerController implements Initializable {
 		}
 	}
 
+	private void addToRecentFiles(String newFile) {
+		// Load existing properties file
+		Properties properties = new Properties();
+		try (InputStream inputStream = new FileInputStream("dataworker.properties")) {
+			properties.load(inputStream);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		// Get current recentfiles value
+		String currentRecentFiles = properties.getProperty("recentfiles");
+
+		// Add newFile to recentfiles value
+		currentRecentFiles = newFile + "," + currentRecentFiles;
+
+		// Update recentfiles value in properties object
+		properties.setProperty("recentfiles", currentRecentFiles);
+
+		// Write updated properties back to file
+		try (OutputStream outputStream = new FileOutputStream("dataworker.properties")) {
+			properties.store(outputStream, null);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 
 	@FXML
 	void onQuitAction(ActionEvent event) {
@@ -103,9 +126,36 @@ public class DataWorkerController implements Initializable {
 	void onSaveAction(ActionEvent event){
 		saveCurrentEntryBase();
 	}
+	@FXML
+	void onNewDataBaseAction(ActionEvent event) {
+		TextInputDialog dialog = new TextInputDialog();
+		dialog.setTitle("Neue DatenBank");
+		dialog.setHeaderText(null);
+		//dialog.setContentText("Enter a name for the new database:");
+		dialog.setContentText("Gebe einen Namen für die neue DatenBank ein:");
+		Optional<String> result = dialog.showAndWait();
+		result.ifPresent(databaseName -> {
+			String newFilename = "DataBases/" + databaseName + ".json";
+			CreateNewDataBase cndb = new CreateNewDataBase();
+			try {
+				cndb.createFile(databaseName + ".json");
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+			try {
+				addToRecentFiles(newFilename);
+				loadAndRefresh(newFilename);
+				updateRecentBasesPane();
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		});
+	}
+
 
 	@FXML
 	void onReloadAction(ActionEvent event) {
+		// TODO
 	}
 
 	private EntryBase loadEntryBase(String filename) {
@@ -183,8 +233,6 @@ public class DataWorkerController implements Initializable {
 		}
 
 	}
-
-
 
 	@FXML
 	void onSearchPromtEntered(ActionEvent event){
