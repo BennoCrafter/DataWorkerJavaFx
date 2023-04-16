@@ -87,6 +87,7 @@
               <buttons>
                   <Button fx:id="addEntryButton" disable="true" mnemonicParsing="false" onAction="#onAdEntryButton" text="Add" />
                 <Button fx:id="deleteEntryButton" disable="true" minWidth="23.0" mnemonicParsing="false" onAction="#onDeleteEntryButton" prefHeight="26.0" text="Delete" />
+                  <Button fx:id="singleEditButton" disable="true" mnemonicParsing="false" onAction="#onSingleEditButton" text="Edit" />
               </buttons>
             </ButtonBar>
          </children>

@@ -15,7 +15,6 @@ import java.util.Optional;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
-import de.bennocrafter.dataworker.io.BackupZipping;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -33,6 +32,7 @@ import javafx.scene.layout.VBox;
 
 import de.bennocrafter.dataworker.core.Entry;
 import de.bennocrafter.dataworker.core.EntryBase;
+import de.bennocrafter.dataworker.io.BackupZipping;
 import de.bennocrafter.dataworker.io.CreateNewDataBase;
 import de.bennocrafter.dataworker.io.JSONDataWorkerReader;
 import de.bennocrafter.dataworker.io.JSONDataWorkerWriter;
@@ -63,6 +63,14 @@ public class DataWorkerController implements Initializable {
 	@FXML
 	private TextField searchBar;
 
+	@FXML
+	private Button singleEditButton;
+
+
+	@FXML
+	void onSingleEditButton(ActionEvent event) {
+		new SingleEdit().show(selectedEntryBase, selectedEntry);
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -106,24 +114,15 @@ public class DataWorkerController implements Initializable {
 
 	private void addToRecentFiles(String newFile) {
 		Path propertyFile = Paths.get(DATAWORKER_PROPERTIES);
-		// Load existing properties file
 		Properties properties = new Properties();
-
 		try (BufferedReader reader = Files.newBufferedReader(propertyFile, StandardCharsets.UTF_8)) {
 			properties.load(reader);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		// Get current recentfiles value
 		String currentRecentFiles = properties.getProperty("recentfiles");
-
-		// Add newFile to recentfiles value
 		currentRecentFiles = newFile + "," + currentRecentFiles;
-
-		// Update recentfiles value in properties object
 		properties.setProperty("recentfiles", currentRecentFiles);
-
 		try (BufferedWriter writer = Files.newBufferedWriter(propertyFile, StandardCharsets.UTF_8)) {
 			properties.store(writer, null);
 		} catch (IOException e) {
@@ -195,8 +194,10 @@ public class DataWorkerController implements Initializable {
 			if (newSelection != null) {
 				this.selectedEntry = newSelection;
 				deleteEntryButton.setDisable(false);
+				singleEditButton.setDisable(false);
 			} else {
 				deleteEntryButton.setDisable(true);
+				singleEditButton.setDisable(true);
 				this.selectedEntry = null;
 			}
 		});
@@ -221,7 +222,6 @@ public class DataWorkerController implements Initializable {
 			tableView.getColumns().add(column);
 		}
 
-
 		// define content of the table
 		for (Entry e: base.getEntries()) {
 			tableView.getItems().add(e);
@@ -240,7 +240,6 @@ public class DataWorkerController implements Initializable {
 	@FXML
 	void aboutMenuClicked(ActionEvent event) {
 		new AboutMenu().show();
-
 	}
 
 	@FXML
