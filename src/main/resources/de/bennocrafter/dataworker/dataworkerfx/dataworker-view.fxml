@@ -29,9 +29,9 @@
                   </Menu>
                 <Menu mnemonicParsing="false" onAction="#onReloadAction" text="File">
                      <items>
-                        <MenuItem fx:id="newDataBase" mnemonicParsing="false" onAction="#onNewDataBaseAction" text="Neue DatenBank" />
-                        <MenuItem fx:id="save" mnemonicParsing="false" onAction="#onSaveAction" text="Save" />
+                        <MenuItem fx:id="newDataBase" mnemonicParsing="false" onAction="#onNewDataBaseAction" text="Neue Datenbank" />
                         <MenuItem fx:id="loadEntryBaseButton" mnemonicParsing="false" onAction="#onLoadEntryBaseAction" text="Load" />
+                        <MenuItem fx:id="save" mnemonicParsing="false" onAction="#onSaveAction" text="Save" />
                      </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Edit">
