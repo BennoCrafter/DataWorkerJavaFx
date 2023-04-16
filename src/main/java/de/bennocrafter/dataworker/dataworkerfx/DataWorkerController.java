@@ -2,6 +2,7 @@ package de.bennocrafter.dataworker.dataworkerfx;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -19,9 +20,18 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 
 import de.bennocrafter.dataworker.core.Entry;
 import de.bennocrafter.dataworker.core.EntryBase;
@@ -29,10 +39,6 @@ import de.bennocrafter.dataworker.io.BackupZipping;
 import de.bennocrafter.dataworker.io.CreateNewDataBase;
 import de.bennocrafter.dataworker.io.JSONDataWorkerReader;
 import de.bennocrafter.dataworker.io.JSONDataWorkerWriter;
-//import static de.bennocrafter.dataworker.io.ReadProperties.DATAWORKER_PROPERTIES;
-
-import javafx.scene.text.Font;
-import javafx.stage.FileChooser;
 
 public class DataWorkerController implements Initializable {
 	public static final String DATAWORKER_PROPERTIES = "dataworker.properties";
