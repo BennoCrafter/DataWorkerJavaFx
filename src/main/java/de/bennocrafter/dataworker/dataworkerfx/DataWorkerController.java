@@ -19,14 +19,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.VBox;
 
@@ -36,6 +29,7 @@ import de.bennocrafter.dataworker.io.BackupZipping;
 import de.bennocrafter.dataworker.io.CreateNewDataBase;
 import de.bennocrafter.dataworker.io.JSONDataWorkerReader;
 import de.bennocrafter.dataworker.io.JSONDataWorkerWriter;
+import javafx.scene.text.Font;
 
 public class DataWorkerController implements Initializable {
 	public static final String DATAWORKER_PROPERTIES = "dataworker.properties";
@@ -95,6 +89,9 @@ public class DataWorkerController implements Initializable {
 					Label button = new Label(buttonLabel);
 					button.setWrapText(true);
 
+					Tooltip tooltip = new Tooltip(file); // Create a tooltip with the file name
+					button.setTooltip(tooltip); // Set tooltip for the label/button
+
 					button.setOnMouseClicked(event -> {
 						try {
 							loadAndRefresh(file);
@@ -102,6 +99,14 @@ public class DataWorkerController implements Initializable {
 						catch (Exception e) {
 							throw new RuntimeException(e);
 						}
+					});
+
+					// Add mouse event handlers for hover effect
+					button.setOnMouseEntered(event -> {
+						button.setStyle("-fx-background-color: #e0e0e0;"); // Set the background color to a lighter shade
+					});
+					button.setOnMouseExited(event -> {
+						button.setStyle("-fx-background-color: transparent;"); // Reset the background color
 					});
 
 					recentBasesPane.getChildren().add(button);
