@@ -1,23 +1,40 @@
 package de.bennocrafter.dataworker.dataworkerfx;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.Properties;
+import java.util.ResourceBundle;
 
-import de.bennocrafter.dataworker.io.CreateNewDataBase;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.VBox;
 
 import de.bennocrafter.dataworker.core.Entry;
 import de.bennocrafter.dataworker.core.EntryBase;
+import de.bennocrafter.dataworker.io.CreateNewDataBase;
 import de.bennocrafter.dataworker.io.JSONDataWorkerReader;
 import de.bennocrafter.dataworker.io.JSONDataWorkerWriter;
-import javafx.stage.Stage;
 
 public class DataWorkerController implements Initializable {
 	private static final String DATAWORKER_PROPERTIES = "dataworker.properties";
@@ -53,10 +70,10 @@ public class DataWorkerController implements Initializable {
 
 	private void updateRecentBasesPane() {
 		recentBasesPane.getChildren().clear();
-
 		Properties properties = new Properties();
-		try (InputStream input = new FileInputStream(DATAWORKER_PROPERTIES)) {
-			properties.load(input);
+		Path propertyFile = Paths.get(DATAWORKER_PROPERTIES);
+		try (BufferedReader reader = Files.newBufferedReader(propertyFile, StandardCharsets.UTF_8)) {
+			properties.load(reader);
 			String recentfiles = properties.getProperty("recentfiles");
 			if (recentfiles != null) {
 				this.recentFiles = Arrays.asList(recentfiles.split(","));
@@ -84,10 +101,12 @@ public class DataWorkerController implements Initializable {
 	}
 
 	private void addToRecentFiles(String newFile) {
+		Path propertyFile = Paths.get(DATAWORKER_PROPERTIES);
 		// Load existing properties file
 		Properties properties = new Properties();
-		try (InputStream inputStream = new FileInputStream("dataworker.properties")) {
-			properties.load(inputStream);
+
+		try (BufferedReader reader = Files.newBufferedReader(propertyFile, StandardCharsets.UTF_8)) {
+			properties.load(reader);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -101,9 +120,8 @@ public class DataWorkerController implements Initializable {
 		// Update recentfiles value in properties object
 		properties.setProperty("recentfiles", currentRecentFiles);
 
-		// Write updated properties back to file
-		try (OutputStream outputStream = new FileOutputStream("dataworker.properties")) {
-			properties.store(outputStream, null);
+		try (BufferedWriter writer = Files.newBufferedWriter(propertyFile, StandardCharsets.UTF_8)) {
+			properties.store(writer, null);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -129,10 +147,10 @@ public class DataWorkerController implements Initializable {
 	@FXML
 	void onNewDataBaseAction(ActionEvent event) {
 		TextInputDialog dialog = new TextInputDialog();
-		dialog.setTitle("Neue DatenBank");
+		dialog.setTitle("Neue Datenbank");
 		dialog.setHeaderText(null);
 		//dialog.setContentText("Enter a name for the new database:");
-		dialog.setContentText("Gebe einen Namen für die neue DatenBank ein:");
+		dialog.setContentText("Gebe einen Namen für die neue Datenbank ein:");
 		Optional<String> result = dialog.showAndWait();
 		result.ifPresent(databaseName -> {
 			String newFilename = "DataBases/" + databaseName + ".json";
@@ -168,6 +186,7 @@ public class DataWorkerController implements Initializable {
 		tableView.setEditable(true);
 		tableView.getColumns().clear();
 		tableView.getItems().clear();
+		TableView.TableViewFocusModel<Entry> focusModel = tableView.getFocusModel();
 		tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
 			if (newSelection != null) {
 				this.selectedEntry = newSelection;
