@@ -6,7 +6,7 @@ import javafx.scene.control.ButtonType;
 public class ComingSoonWindow {
 
     void showAlert(){
-        showAlert("");
+        showAlert("sfdf");
     }
     void showAlert(String feature){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

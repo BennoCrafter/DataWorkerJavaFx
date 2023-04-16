@@ -15,6 +15,7 @@ import java.util.Optional;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
+import de.bennocrafter.dataworker.io.BackupZipping;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -37,7 +38,7 @@ import de.bennocrafter.dataworker.io.JSONDataWorkerReader;
 import de.bennocrafter.dataworker.io.JSONDataWorkerWriter;
 
 public class DataWorkerController implements Initializable {
-	private static final String DATAWORKER_PROPERTIES = "dataworker.properties";
+	public static final String DATAWORKER_PROPERTIES = "dataworker.properties";
 	private JSONDataWorkerWriter writer = new JSONDataWorkerWriter();
 	private List<String> recentFiles = new ArrayList<>();
 
@@ -65,6 +66,9 @@ public class DataWorkerController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		BackupZipping backupApp = new BackupZipping();
+		backupApp.start("DataBases", "DataBases/Backups", "recents");
+		backupApp.reduce(20);
 		updateRecentBasesPane();
 	}
 
@@ -174,7 +178,7 @@ public class DataWorkerController implements Initializable {
 	@FXML
 	void onReloadAction(ActionEvent event) {
 		// TODO
-		new ComingSoonWindow().showAlert("reloading");
+		//new ComingSoonWindow().showAlert("reloading");
 	}
 
 	private EntryBase loadEntryBase(String filename) {
@@ -256,7 +260,6 @@ public class DataWorkerController implements Initializable {
 
 	@FXML
 	void onSearchPromtEntered(ActionEvent event){
-
 		System.out.println(searchBar.getText());
 		System.out.println(selectedEntryBase.allMatches(searchBar.getText()));
 		searchBar.setOnMouseClicked(e -> searchBar.selectAll());
