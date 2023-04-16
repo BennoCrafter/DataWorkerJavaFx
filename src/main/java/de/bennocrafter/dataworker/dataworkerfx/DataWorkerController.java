@@ -19,7 +19,15 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.VBox;
 
@@ -29,7 +37,6 @@ import de.bennocrafter.dataworker.io.BackupZipping;
 import de.bennocrafter.dataworker.io.CreateNewDataBase;
 import de.bennocrafter.dataworker.io.JSONDataWorkerReader;
 import de.bennocrafter.dataworker.io.JSONDataWorkerWriter;
-import javafx.scene.text.Font;
 
 public class DataWorkerController implements Initializable {
 	public static final String DATAWORKER_PROPERTIES = "dataworker.properties";
@@ -63,7 +70,10 @@ public class DataWorkerController implements Initializable {
 
 	@FXML
 	void onSingleEditButton(ActionEvent event) {
-		new SingleEdit().show(selectedEntryBase, selectedEntry);
+		SingleEdit singleEdit = new SingleEdit();
+		DatabaseSingleton.getInstance().setEntry(selectedEntry);
+		DatabaseSingleton.getInstance().setEntryBase(selectedEntryBase);
+		singleEdit.show();
 	}
 
 	@Override

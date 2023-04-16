@@ -2,26 +2,19 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.bennocrafter.dataworker.dataworkerfx.SingleEdit">
-   <bottom>
-      <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-        <buttons>
-          <Button fx:id="singleEditCloseButton" mnemonicParsing="false" onAction="#onSingleEditClose" text="Close" />
-        </buttons>
-      </ButtonBar>
-   </bottom>
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.bennocrafter.dataworker.dataworkerfx.SingleEdit">
    <padding>
       <Insets right="10.0" />
    </padding>
    <center>
-      <ScrollPane fx:id="formPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <ScrollPane fx:id="scrollPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <content>
             <GridPane fx:id="gridPane">
               <columnConstraints>
@@ -34,4 +27,11 @@
          </content>
       </ScrollPane>
    </center>
+   <bottom>
+      <HBox alignment="CENTER" prefHeight="40.0" prefWidth="590.0" BorderPane.alignment="CENTER">
+         <children>
+          <Button fx:id="singleEditCloseButton" alignment="CENTER" mnemonicParsing="false" onAction="#onSingleEditClose" text="Close" textAlignment="CENTER" />
+         </children>
+      </HBox>
+   </bottom>
 </BorderPane>
