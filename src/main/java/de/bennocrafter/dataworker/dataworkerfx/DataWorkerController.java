@@ -116,11 +116,11 @@ public class DataWorkerController implements Initializable {
 	}
 	@FXML
 	void onUndoAction(ActionEvent event){
-		System.out.println("undo");
+		new ComingSoonWindow().showAlert("undo");
 	}
 	@FXML
 	void onloadBackupAction(ActionEvent event){
-		System.out.println("load backup");
+		new ComingSoonWindow().showAlert("load backup");
 	}
 	@FXML
 	void onSaveAction(ActionEvent event){
@@ -156,6 +156,7 @@ public class DataWorkerController implements Initializable {
 	@FXML
 	void onReloadAction(ActionEvent event) {
 		// TODO
+		new ComingSoonWindow().showAlert("reloading");
 	}
 
 	private EntryBase loadEntryBase(String filename) {

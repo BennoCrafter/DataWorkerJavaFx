@@ -15,4 +15,13 @@ public class CSVToJSONConverter {
         EntryBase base = reader.read(fileName, name);
         jsonWriter.write(base, name);
     }
+
+    private void convertCSVToJSON(String fileName) throws Exception {
+        CSVDataWorkerReader reader = new CSVDataWorkerReader();
+        JSONDataWorkerWriter jsonWriter = new JSONDataWorkerWriter();
+
+        String name = fileName.substring(0, fileName.lastIndexOf("."));
+        EntryBase base = reader.read(fileName, name);
+        jsonWriter.write(base, name);
+    }
 }
