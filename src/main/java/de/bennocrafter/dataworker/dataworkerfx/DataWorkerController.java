@@ -19,15 +19,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputDialog;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.VBox;
 
@@ -37,6 +29,10 @@ import de.bennocrafter.dataworker.io.BackupZipping;
 import de.bennocrafter.dataworker.io.CreateNewDataBase;
 import de.bennocrafter.dataworker.io.JSONDataWorkerReader;
 import de.bennocrafter.dataworker.io.JSONDataWorkerWriter;
+//import static de.bennocrafter.dataworker.io.ReadProperties.DATAWORKER_PROPERTIES;
+
+import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
 
 public class DataWorkerController implements Initializable {
 	public static final String DATAWORKER_PROPERTIES = "dataworker.properties";
@@ -162,6 +158,33 @@ public class DataWorkerController implements Initializable {
 	void onSaveAction(ActionEvent event){
 		saveCurrentEntryBase();
 	}
+	@FXML
+	void onLoadEntryBaseAction(ActionEvent event){
+		String destinationFolderPath = "DataBases/";
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Select a File");
+
+		// Set initial directory (optional)
+		File initialDirectory = new File(System.getProperty("user.home"));
+		fileChooser.setInitialDirectory(initialDirectory);
+
+		// Show the FileChooser and get the selected file
+		File selectedFile = fileChooser.showOpenDialog(null);
+		if (selectedFile != null) {
+			System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+			try {
+				// Create destination path with filename
+				String destinationFilePath = destinationFolderPath + selectedFile.getName();
+				Files.copy(selectedFile.toPath(), Paths.get(destinationFilePath));
+				System.out.println("File copy completed successfully.");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			System.out.println("No file selected.");
+		}
+	}
+
 	@FXML
 	void onNewDataBaseAction(ActionEvent event) {
 		TextInputDialog dialog = new TextInputDialog();

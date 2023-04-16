@@ -10,10 +10,11 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.zip.*;
 
-import static de.bennocrafter.dataworker.dataworkerfx.DataWorkerController.DATAWORKER_PROPERTIES;
+//import static de.bennocrafter.dataworker.io.ReadProperties.DATAWORKER_PROPERTIES;
 
 
 public class BackupZipping {
+    public static final String DATAWORKER_PROPERTIES = "dataworker.properties";
     private List<String> recentFiles = new ArrayList<>();
     private String zipFilePath;
     private String sourceFolderPath;
