@@ -183,8 +183,12 @@ public class DataWorkerController implements Initializable {
 				String destinationFilePath = destinationFolderPath + selectedFile.getName();
 				Files.copy(selectedFile.toPath(), Paths.get(destinationFilePath));
 				System.out.println("File copy completed successfully.");
+				addToRecentFiles("DataBases/" + selectedFile.getName());
+				loadAndRefresh("DataBases/" + selectedFile.getName());
 			} catch (IOException e) {
 				e.printStackTrace();
+			} catch (Exception e) {
+				throw new RuntimeException(e);
 			}
 		} else {
 			System.out.println("No file selected.");
