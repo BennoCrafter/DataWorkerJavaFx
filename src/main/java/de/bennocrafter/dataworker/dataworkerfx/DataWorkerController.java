@@ -16,6 +16,7 @@ import java.util.Optional;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
+import de.bennocrafter.dataworker.io.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -35,10 +36,6 @@ import javafx.stage.FileChooser;
 
 import de.bennocrafter.dataworker.core.Entry;
 import de.bennocrafter.dataworker.core.EntryBase;
-import de.bennocrafter.dataworker.io.BackupZipping;
-import de.bennocrafter.dataworker.io.CreateNewDataBase;
-import de.bennocrafter.dataworker.io.JSONDataWorkerReader;
-import de.bennocrafter.dataworker.io.JSONDataWorkerWriter;
 
 public class DataWorkerController implements Initializable {
 	public static final String DATAWORKER_PROPERTIES = "dataworker.properties";
@@ -165,7 +162,7 @@ public class DataWorkerController implements Initializable {
 		saveCurrentEntryBase();
 	}
 	@FXML
-	void onLoadEntryBaseAction(ActionEvent event){
+	void onLoadEntryBaseAction(ActionEvent event) throws Exception {
 		String destinationFolderPath = "DataBases/";
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Select a File");
@@ -178,17 +175,29 @@ public class DataWorkerController implements Initializable {
 		File selectedFile = fileChooser.showOpenDialog(null);
 		if (selectedFile != null) {
 			System.out.println("Selected file: " + selectedFile.getAbsolutePath());
-			try {
-				// Create destination path with filename
-				String destinationFilePath = destinationFolderPath + selectedFile.getName();
-				Files.copy(selectedFile.toPath(), Paths.get(destinationFilePath));
-				System.out.println("File copy completed successfully.");
-				addToRecentFiles("DataBases/" + selectedFile.getName());
-				loadAndRefresh("DataBases/" + selectedFile.getName());
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (Exception e) {
-				throw new RuntimeException(e);
+			var type = selectedFile.getName().substring(selectedFile.getName().lastIndexOf('.') + 1).toLowerCase();
+			if("csv".equals(type)){
+				CSVDataWorkerReader reader = new CSVDataWorkerReader();
+				JSONDataWorkerWriter jsonWriter = new JSONDataWorkerWriter();
+
+				String name = selectedFile.getName().substring(0, selectedFile.getName().lastIndexOf("."));
+				EntryBase base = reader.read(selectedFile.getAbsolutePath(), name);
+				jsonWriter.write(base, "DataBases/" + name + ".json");
+				addToRecentFiles("DataBases/" + name + ".json");
+				loadAndRefresh("DataBases/" + name + ".json");
+			}else{
+				try {
+					// Create destination path with filename
+					String destinationFilePath = destinationFolderPath + selectedFile.getName();
+					Files.copy(selectedFile.toPath(), Paths.get(destinationFilePath));
+					System.out.println("File copy completed successfully.");
+					addToRecentFiles("DataBases/" + selectedFile.getName());
+					loadAndRefresh("DataBases/" + selectedFile.getName());
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
 			}
 		} else {
 			System.out.println("No file selected.");
