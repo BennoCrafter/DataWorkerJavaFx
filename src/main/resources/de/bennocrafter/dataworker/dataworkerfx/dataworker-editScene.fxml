@@ -13,6 +13,15 @@
    <padding>
       <Insets right="10.0" />
    </padding>
+   <bottom>
+      <HBox alignment="CENTER" prefHeight="40.0" prefWidth="590.0" spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="previousButton" mnemonicParsing="false" onAction="#onPreviousButton" text="&lt;" />
+          <Button fx:id="singleEditCloseButton" alignment="CENTER" mnemonicParsing="false" onAction="#onSingleEditClose" text="Close" textAlignment="CENTER" />
+            <Button fx:id="nextButton" mnemonicParsing="false" onAction="#onNextButton" text="&gt;" />
+         </children>
+      </HBox>
+   </bottom>
    <center>
       <ScrollPane fx:id="scrollPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <content>
@@ -27,13 +36,4 @@
          </content>
       </ScrollPane>
    </center>
-   <bottom>
-      <HBox alignment="CENTER" prefHeight="40.0" prefWidth="590.0" spacing="10.0" BorderPane.alignment="CENTER">
-         <children>
-            <Button fx:id="previousButton" mnemonicParsing="false" onAction="#onPreviousButton" text="&lt;" />
-          <Button fx:id="singleEditCloseButton" alignment="CENTER" mnemonicParsing="false" onAction="#onSingleEditClose" text="Close" textAlignment="CENTER" />
-            <Button fx:id="nextButton" mnemonicParsing="false" onAction="#onNextButton" text="&gt;" />
-         </children>
-      </HBox>
-   </bottom>
 </BorderPane>

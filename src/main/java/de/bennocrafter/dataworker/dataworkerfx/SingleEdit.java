@@ -36,13 +36,13 @@ public class SingleEdit implements Initializable {
 	@FXML
 	private GridPane gridPane;
 	@FXML
-	private ScrollPane scrollPane;
-	@FXML
 	private BorderPane borderPane;
 	@FXML
 	private Button nextButton;
 	@FXML
 	private Button previousButton;
+	@FXML
+	private ScrollPane scrollPane;
 
 	private List<TextArea> inputFields;
 
