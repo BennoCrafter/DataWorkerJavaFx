@@ -79,4 +79,20 @@ public class EntryBase {
 		}
 		return false;
 	}
+
+	public Entry previousEntryOf(Entry entry) {
+		int position = this.entries.indexOf(entry) - 1;
+		if (position < 0) {
+			position = this.entries.size()-1;
+		}
+		return this.entries.get(position);
+	}
+
+	public Entry nextEntryOf(Entry entry) {
+		int position = this.entries.indexOf(entry) + 1;
+		if (position > this.entries.size()-1) {
+			position = 0;
+		}
+		return this.entries.get(position);
+	}
 }

@@ -16,7 +16,6 @@ import java.util.Optional;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
-import de.bennocrafter.dataworker.io.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -36,6 +35,10 @@ import javafx.stage.FileChooser;
 
 import de.bennocrafter.dataworker.core.Entry;
 import de.bennocrafter.dataworker.core.EntryBase;
+import de.bennocrafter.dataworker.io.BackupZipping;
+import de.bennocrafter.dataworker.io.CreateNewDataBase;
+import de.bennocrafter.dataworker.io.JSONDataWorkerReader;
+import de.bennocrafter.dataworker.io.JSONDataWorkerWriter;
 
 public class DataWorkerController implements Initializable {
 	public static final String DATAWORKER_PROPERTIES = "dataworker.properties";
@@ -73,6 +76,7 @@ public class DataWorkerController implements Initializable {
 		DatabaseSingleton.getInstance().setEntry(selectedEntry);
 		DatabaseSingleton.getInstance().setEntryBase(selectedEntryBase);
 		singleEdit.show();
+		refreshTableView(DatabaseSingleton.getInstance().getEntryBase());
 	}
 
 	@Override
@@ -93,7 +97,8 @@ public class DataWorkerController implements Initializable {
 			if (recentfiles != null) {
 				this.recentFiles = Arrays.asList(recentfiles.split(","));
 				for (String file: this.recentFiles) {
-					String buttonLabel = loadEntryBase(file).getTableName();
+
+					String buttonLabel = DatabaseSingleton.getInstance().getTableName(file);
 					if (buttonLabel==null) buttonLabel = "Noname";
 					Label button = new Label(buttonLabel);
 					button.setWrapText(true);
@@ -159,7 +164,7 @@ public class DataWorkerController implements Initializable {
 	}
 	@FXML
 	void onSaveAction(ActionEvent event){
-		saveCurrentEntryBase();
+		DatabaseSingleton.getInstance().saveEntryBase();
 	}
 	@FXML
 	void onLoadEntryBaseAction(ActionEvent event) throws Exception {
@@ -237,12 +242,13 @@ public class DataWorkerController implements Initializable {
 		//new ComingSoonWindow().showAlert("reloading");
 	}
 
-	private EntryBase loadEntryBase(String filename) {
-		JSONDataWorkerReader r = new JSONDataWorkerReader();
-		return r.read(filename);
-	}
 
 	private void loadAndRefresh(String fileName) throws Exception {
+		EntryBase base = DatabaseSingleton.getInstance().loadEntryBase(fileName);
+		refreshTableView(base);
+	}
+
+	private void refreshTableView(EntryBase base) {
 		tableView.setEditable(true);
 		tableView.getColumns().clear();
 		tableView.getItems().clear();
@@ -258,8 +264,6 @@ public class DataWorkerController implements Initializable {
 				this.selectedEntry = null;
 			}
 		});
-		EntryBase base = loadEntryBase(fileName);
-
 		// define header of the table
 		for (String attribute : base.getAttributes()) {
 			TableColumn<Entry, String> column = new TableColumn<>(attribute);
@@ -289,11 +293,6 @@ public class DataWorkerController implements Initializable {
 		this.addEntryButton.setDisable(false);
 	}
 
-	private void saveCurrentEntryBase() {
-		String filename = this.selectedEntryBase.getLocation();
-		writer.write(this.selectedEntryBase, filename);
-	}
-
 	@FXML
 	void aboutMenuClicked(ActionEvent event) {
 		new AboutMenu().show();
@@ -308,8 +307,7 @@ public class DataWorkerController implements Initializable {
 			}
 			selectedEntryBase.add(newEntry);
 			tableView.getItems().add(newEntry);
-			saveCurrentEntryBase();
-
+			DatabaseSingleton.getInstance().saveEntryBase();
 		}
 
 	}
@@ -336,7 +334,7 @@ public class DataWorkerController implements Initializable {
 				tableView.getItems().remove(this.selectedEntry);
 			}
 		});
-		saveCurrentEntryBase();
+		DatabaseSingleton.getInstance().saveEntryBase();
 	}
 
 }
