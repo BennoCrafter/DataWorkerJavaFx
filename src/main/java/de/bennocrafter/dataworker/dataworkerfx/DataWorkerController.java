@@ -36,8 +36,8 @@ import javafx.stage.FileChooser;
 import de.bennocrafter.dataworker.core.Entry;
 import de.bennocrafter.dataworker.core.EntryBase;
 import de.bennocrafter.dataworker.io.BackupZipping;
+import de.bennocrafter.dataworker.io.CSVDataWorkerReader;
 import de.bennocrafter.dataworker.io.CreateNewDataBase;
-import de.bennocrafter.dataworker.io.JSONDataWorkerReader;
 import de.bennocrafter.dataworker.io.JSONDataWorkerWriter;
 
 public class DataWorkerController implements Initializable {
@@ -274,7 +274,7 @@ public class DataWorkerController implements Initializable {
 				String newValue = e.getNewValue();
 				if (newValue != null && !newValue.isEmpty()) {
 					entry.addValueFor(attribute, newValue);
-					saveCurrentEntryBase();
+					DatabaseSingleton.getInstance().saveEntryBase();
 				} else {
 					// Optional: Handle empty or null values as needed
 				}
