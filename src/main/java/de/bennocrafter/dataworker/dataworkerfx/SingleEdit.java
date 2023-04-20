@@ -21,7 +21,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
@@ -29,18 +28,23 @@ import javafx.stage.Stage;
 
 import de.bennocrafter.dataworker.core.Entry;
 import de.bennocrafter.dataworker.core.EntryBase;
+import de.bennocrafter.dataworker.core.LayoutInfo;
 
 public class SingleEdit implements Initializable {
+	public static final String LAYOUT_KEY_ROWSIZE = "rowsize";
 	@FXML
 	private Button singleEditCloseButton;
 	@FXML
 	private GridPane gridPane;
+	/*
 	@FXML
 	private BorderPane borderPane;
 	@FXML
 	private Button nextButton;
 	@FXML
 	private Button previousButton;
+	Ü/
+	 */
 	@FXML
 	private ScrollPane scrollPane;
 
@@ -50,6 +54,7 @@ public class SingleEdit implements Initializable {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("dataworker-editScene.fxml"));
 			Parent root = loader.load();
+			//root.setStyle("-fx-font-size: 24;");
 			Stage stage = new Stage();
 			stage.setTitle("Edit");
 			Scene scene = new Scene(root, 800, 600);
@@ -68,11 +73,13 @@ public class SingleEdit implements Initializable {
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
+		scrollPane.setContent(gridPane);
 		scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 		gridPane.setHgap(10);
 		gridPane.setVgap(10);
 		gridPane.setPadding(new Insets(20));
 
+		gridPane.getColumnConstraints().clear();
 		ColumnConstraints columnConstraints1 = new ColumnConstraints();
 		columnConstraints1.setPercentWidth(20);
 		gridPane.getColumnConstraints().add(columnConstraints1);
@@ -105,8 +112,7 @@ public class SingleEdit implements Initializable {
 				prevPosition = attributes.size()-1;
 			}
 			TextArea prevInputValue = this.inputFields.get(prevPosition);
-
-			// overwrite the Tab key so we directly jump to the next input field
+			// overwrite the Tab key so we directly jump to the next/prev input field
 			valueInput.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 				if (event.getCode() == KeyCode.TAB && event.isShiftDown()) {
 					prevInputValue.requestFocus();
@@ -117,7 +123,6 @@ public class SingleEdit implements Initializable {
 					event.consume(); // Consume the event to prevent the default behavior
 				}
 			});
-
 			gridPane.add(valueInput, 1, row);
 			row++;
 		}
@@ -133,7 +138,7 @@ public class SingleEdit implements Initializable {
 			valueInput.setPrefWidth(600);
 			double fontSize = valueInput.getFont().getSize();
 			double lineHeight = fontSize * 1.5;
-			int linesToShow = 2;
+			int linesToShow = getLinesOfField(attribute);
 			valueInput.setPrefHeight(lineHeight * linesToShow + 10);
 			valueInput.setWrapText(true);
 
@@ -150,10 +155,25 @@ public class SingleEdit implements Initializable {
 					}
 				}
 			});
-
 			inputFields.add(valueInput);
 		}
 	}
+
+	private int getLinesOfField(String attribute) {
+		EntryBase entryBase = DatabaseSingleton.getInstance().getEntryBase();
+		if (entryBase.hasLayout(attribute)) {
+			LayoutInfo layout = entryBase.getLayout(attribute);
+			String rowsize = layout.getInfo(LAYOUT_KEY_ROWSIZE);
+			try {
+				return Integer.parseInt(rowsize);
+			} catch (NumberFormatException e) {
+				return 1;
+			}
+		} else {
+			return 1;
+		}
+	}
+
 	@FXML
 	void onNextButton(ActionEvent event) {
 		DatabaseSingleton.getInstance().getEntry();

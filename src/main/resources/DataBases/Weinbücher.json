@@ -1,4 +1,8 @@
 {
+   "layout": [{
+      "rowsize": "5",
+      "attribute": "Anmerkungen"
+   }],
    "entries": [
       {
          "Anmerkungen": "",

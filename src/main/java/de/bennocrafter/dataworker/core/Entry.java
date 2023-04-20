@@ -15,12 +15,8 @@ public class Entry {
 				'}';
 	}
 
-	// {'Jahr': '2023'; 'Autor': 'joba',...}
 	private Map<String, String> values = new HashMap<>();
 
-	/**
-	 * getValue("Jahr") -> "2023"
-	 */
 	public String valueFor(String attribute) {
 		return this.values.get(attribute);
 	}

@@ -4,7 +4,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,6 +12,7 @@ import org.json.JSONTokener;
 
 import de.bennocrafter.dataworker.core.Entry;
 import de.bennocrafter.dataworker.core.EntryBase;
+import de.bennocrafter.dataworker.core.LayoutInfo;
 
 public class JSONDataWorkerReader {
     public EntryBase read(String inputName) {
@@ -36,7 +36,6 @@ public class JSONDataWorkerReader {
             base.setAttributes(loadedAttributes);
 
             JSONArray loadedEntriesArray = loadedJsonObject.getJSONArray("entries");
-            List<Map<String, String>> loadedEntries = new ArrayList<>();
             for (int i = 0; i < loadedEntriesArray.length(); i++) {
                 JSONObject entryObject = loadedEntriesArray.getJSONObject(i);
                 Entry e = new Entry();
@@ -44,6 +43,23 @@ public class JSONDataWorkerReader {
                     e.addValueFor(attr, entryObject.getString(attr));
                 }
                 base.add(e);
+            }
+
+            if (loadedJsonObject.has("layout")) {
+                JSONArray layoutArray = loadedJsonObject.getJSONArray("layout");
+                for (int i = 0; i < layoutArray.length(); i++) {
+                    JSONObject layoutObject = layoutArray.getJSONObject(i);
+                    LayoutInfo layout = new LayoutInfo();
+                    String attribute = layoutObject.get("attribute").toString();
+                    layout.setAttribute(attribute);
+
+                    for (String key : layoutObject.keySet()) {
+                        String value = layoutObject.get(key).toString();
+                        layout.addInfo(key, value);
+                    }
+                    base.setLayout(attribute, layout);
+                }
+
             }
 
         } catch (IOException | JSONException e) {

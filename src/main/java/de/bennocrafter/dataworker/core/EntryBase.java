@@ -1,13 +1,30 @@
 package de.bennocrafter.dataworker.core;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EntryBase {
 	String tableName;
 	String location;
 	List<Entry> entries = new ArrayList<>();
 	List<String> attributes = new ArrayList<>();
+
+	Map<String, LayoutInfo> layoutInfo = new HashMap<>();
+
+
+	public boolean hasLayout(String attribute) {
+		return layoutInfo.get(attribute) != null;
+	}
+
+	public LayoutInfo getLayout(String attribute) {
+		return layoutInfo.get(attribute);
+	}
+
+	public void setLayout(String attribute, LayoutInfo layout) {
+		layoutInfo.put(attribute, layout);
+	}
 
 	public void add(Entry e) {
 		this.entries.add(e);

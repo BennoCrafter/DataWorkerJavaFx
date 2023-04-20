@@ -1,20 +1,22 @@
 package de.bennocrafter.dataworker.io;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-import de.bennocrafter.dataworker.core.Entry;
-import de.bennocrafter.dataworker.core.EntryBase;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import de.bennocrafter.dataworker.core.Entry;
+import de.bennocrafter.dataworker.core.EntryBase;
+import de.bennocrafter.dataworker.core.LayoutInfo;
 
 public class JSONDataWorkerWriter {
     private String dataId;
     private List<String> attributes;
 
     private JSONObject writeData(EntryBase base){
-        // Create JSON object
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("data_id", base.getTableName());
@@ -29,10 +31,29 @@ public class JSONDataWorkerWriter {
                 entriesArray.put(entryJson);
             }
             jsonObject.put("entries", entriesArray);
+
+            JSONArray layoutInfo = createLayoutInfo(base);
+            jsonObject.put("layout", layoutInfo);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return jsonObject;
+    }
+
+    private JSONArray createLayoutInfo(EntryBase base) {
+        JSONArray array = new JSONArray();
+        for (String attribute : base.getAttributes()) {
+            if (base.hasLayout(attribute)) {
+                JSONObject layoutObject = new JSONObject();
+                LayoutInfo layout = base.getLayout(attribute);
+                for (String key : layout.getInfoKeys()) {
+                    layoutObject.put(key, layout.getInfo(key));
+                }
+                array.put(layoutObject);
+            }
+        }
+        return array;
     }
 
     public void write(EntryBase base, String outputName) {
