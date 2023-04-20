@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.VPos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -99,7 +100,9 @@ public class SingleEdit implements Initializable {
 		List<String> attributes = DatabaseSingleton.getInstance().getEntryBase().getAttributes();
 		int row = 0;
 		for (String attribute : attributes) {
-			gridPane.add(new Label(attribute), 0, row);
+			Label label = new Label(attribute);
+			gridPane.add(label, 0, row);
+			GridPane.setValignment(label, VPos.TOP);
 			TextArea valueInput = this.inputFields.get(row);
 
 			int nextPosition = row + 1;
