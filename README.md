@@ -1,2 +1,2 @@
-# DataWorker
-A programm for data editing
+# DataWorkerJavaFx
+A programm for data editing in Java
